@@ -17,7 +17,7 @@ enum Result<T> {
 final class LocationService: NSObject {
     private let locationManager: CLLocationManager
     
-    init(manager: CLLocationManager) {
+    init(manager: CLLocationManager = .init()) {
         self.locationManager = manager
         super.init()
         manager.delegate = self
@@ -28,6 +28,14 @@ final class LocationService: NSObject {
     
     var status: CLAuthorizationStatus {
         return CLLocationManager.authorizationStatus()
+    }
+    
+    func requestAuthorization() {
+        locationManager.requestWhenInUseAuthorization()
+    }
+    
+    func getLocation() {
+        locationManager.requestLocation()
     }
 }
 
