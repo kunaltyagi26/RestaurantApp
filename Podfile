@@ -7,6 +7,7 @@ target 'RestaurantApp' do
 
   # Pods for RestaurantApp
 
-  pod 'Alamofire'
+  pod 'AlamofireImage'
+  pod 'Moya'
 
 end
