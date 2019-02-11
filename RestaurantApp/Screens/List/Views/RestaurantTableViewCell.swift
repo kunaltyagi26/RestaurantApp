@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class RestaurantTableViewCell: UITableViewCell {
     @IBOutlet weak var restaurantImageView: UIImageView!
@@ -20,5 +21,11 @@ class RestaurantTableViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+    }
+    
+    func configure(with viewModel: RestaurantListViewModel) {
+        self.restaurantImageView.af_setImage(withURL: viewModel.imageUrl)
+        self.restaurantNameLabel.text = viewModel.name
+        self.locationLabel.text = viewModel.distance
     }
 }
