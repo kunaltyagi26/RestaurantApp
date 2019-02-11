@@ -16,10 +16,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let locationService = LocationService()
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     let service = MoyaProvider<YelpService.BusinessProvider>()
+    let jsonDecoder = JSONDecoder()
+    var navigationController: UINavigationController?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        service.request(<#T##target: YelpService.BusinessProvider##YelpService.BusinessProvider#>, completion: <#T##Completion##Completion##(Result<Response, MoyaError>) -> Void#>)
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        service.request(.search(lat: 42.361145, long: -71.057083)) { (result) in
+            switch result {
+            case .success(let response):
+                let root = try? self.jsonDecoder.decode(Root.self, from: response.data)
+                print(root)
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
         
         switch locationService.status {
         case .notDetermined, .denied, .restricted:
@@ -27,7 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             locationVC.locationService = locationService
             window.rootViewController = locationVC
         default:
-            assertionFailure()
+            let nav = storyboard.instantiateViewController(withIdentifier: "RestaurantNavigationController") as? UINavigationController
+            self.navigationController = nav
+            window.rootViewController = nav
         }
         window.makeKeyAndVisible()
         return true

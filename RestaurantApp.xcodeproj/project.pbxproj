@@ -11,6 +11,7 @@
 		2B8133A122009B8900910033 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B81339F22009B8900910033 /* Main.storyboard */; };
 		2B8133A322009B8D00910033 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B8133A222009B8D00910033 /* Assets.xcassets */; };
 		2B8133A622009B8D00910033 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B8133A422009B8D00910033 /* LaunchScreen.storyboard */; };
+		2B97D1FD2211696F00800AE2 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B97D1FC2211696F00800AE2 /* Models.swift */; };
 		2BCD21FB221012C60009E7E3 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCD21FA221012C60009E7E3 /* BaseView.swift */; };
 		2BCD21FF221013DE0009E7E3 /* DetailsFoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCD21FE221013DE0009E7E3 /* DetailsFoodView.swift */; };
 		2BCD2201221015A70009E7E3 /* DetailsFoodVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCD2200221015A70009E7E3 /* DetailsFoodVC.swift */; };
@@ -31,6 +32,7 @@
 		2B8133A222009B8D00910033 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2B8133A522009B8D00910033 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2B8133A722009B8D00910033 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B97D1FC2211696F00800AE2 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		2BCD21FA221012C60009E7E3 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		2BCD21FE221013DE0009E7E3 /* DetailsFoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsFoodView.swift; sourceTree = "<group>"; };
 		2BCD2200221015A70009E7E3 /* DetailsFoodVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsFoodVC.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 			children = (
 				2BCD2207221016AB0009E7E3 /* Views */,
 				2BCD22032210166B0009E7E3 /* RestaurantTableVC.swift */,
+				2B97D1FC2211696F00800AE2 /* Models.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B97D1FD2211696F00800AE2 /* Models.swift in Sources */,
 				2BCD2212221064690009E7E3 /* NetworkService.swift in Sources */,
 				2BCD2201221015A70009E7E3 /* DetailsFoodVC.swift in Sources */,
 				2BCD22102210434B0009E7E3 /* LocationService.swift in Sources */,
