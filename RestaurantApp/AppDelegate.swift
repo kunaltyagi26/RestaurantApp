@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Moya
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,9 +15,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let window = UIWindow()
     let locationService = LocationService()
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    let service = MoyaProvider<YelpService.BusinessProvider>()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        service.request(<#T##target: YelpService.BusinessProvider##YelpService.BusinessProvider#>, completion: <#T##Completion##Completion##(Result<Response, MoyaError>) -> Void#>)
+        
         switch locationService.status {
         case .notDetermined, .denied, .restricted:
             guard let locationVC = storyboard.instantiateViewController(withIdentifier: "locationVC") as? LocationVC else { return false }

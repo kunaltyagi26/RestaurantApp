@@ -13,6 +13,9 @@ private let apiKey = "C9AzPyhRrBuEiRAPziSi606uzNFnbF2fcFcGzx_JEvc8giWeFn5BSgTesM
 
 enum YelpService {
     enum BusinessProvider: TargetType {
+        case search(lat: Double, long: Double)
+        case details(id: String)
+        
         var baseURL: URL {
             return URL(string: "https://api.yelp.com/v3/businesses")!
         }
@@ -21,6 +24,8 @@ enum YelpService {
             switch self {
             case .search:
                 return "/search"
+            case let .details(id):
+                return "/\(id)"
             }
         }
         
@@ -36,6 +41,8 @@ enum YelpService {
             switch self {
             case .search(let lat, let long):
                 return .requestParameters(parameters: ["latitude" : lat, "longitude": long, "limit": 1], encoding: URLEncoding.queryString)
+            case .details:
+                return .requestPlain
             }
         }
         
