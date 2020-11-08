@@ -26,6 +26,6 @@ class RestaurantTableViewCell: UITableViewCell {
     func configure(with viewModel: RestaurantListViewModel) {
         self.restaurantImageView.af_setImage(withURL: viewModel.imageUrl)
         self.restaurantNameLabel.text = viewModel.name
-        self.locationLabel.text = viewModel.distance
+        self.locationLabel.text = viewModel.formattedDistance
     }
 }

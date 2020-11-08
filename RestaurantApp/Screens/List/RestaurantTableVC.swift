@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ListActions: AnyObject {
+    func didTapCell(_ viewModel: RestaurantListViewModel)
+}
+
 class RestaurantTableVC: UITableViewController {
 
     var viewModels = [RestaurantListViewModel]() {
@@ -15,6 +19,8 @@ class RestaurantTableVC: UITableViewController {
             self.tableView.reloadData()
         }
     }
+    
+    weak var delegate: ListActions?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +46,11 @@ class RestaurantTableVC: UITableViewController {
         cell.configure(with: vm)
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vm = viewModels[indexPath.row]
+        delegate?.didTapCell(vm)
     }
 
 }

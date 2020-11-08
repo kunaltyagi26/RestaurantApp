@@ -8,32 +8,21 @@
 
 import UIKit
 
+protocol LocationActions: class {
+    func didTapAllow()
+}
+
 class LocationVC: UIViewController {
     
     @IBOutlet weak var locationView: LocationView!
     
-    var locationService: LocationService?
+    weak var delegate: LocationActions?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         locationView.didTapAllow = { [weak self] in
-            self?.locationService?.requestAuthorization()
-        }
-        
-        locationService?.didChangeStatus = { [weak self] success in
-            if success {
-                self?.locationService?.getLocation()
-            }
-        }
-        
-        locationService?.newLocation = { [weak self] result in
-            switch result {
-            case .success(let location):
-                print(location)
-            case .failure(let error):
-                assertionFailure("Error getting the user location. \(error)")
-            }
+            self?.delegate?.didTapAllow()
         }
     }
 

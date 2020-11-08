@@ -8,6 +8,7 @@
 
 import UIKit
 import Moya
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,30 +24,62 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         
+        locationService.didChangeStatus = { [weak self] success in
+            if success {
+                self?.locationService.getLocation()
+            }
+        }
+        
+        locationService.newLocation = { [weak self] result in
+            switch result {
+            case .success(let location):
+                self?.loadBusinesses(with: location.coordinate)
+            case .failure(let error):
+                assertionFailure("Error getting the user location. \(error)")
+            }
+        }
+        
         switch locationService.status {
         case .notDetermined, .denied, .restricted:
             guard let locationVC = storyboard.instantiateViewController(withIdentifier: "locationVC") as? LocationVC else { return false }
-            locationVC.locationService = locationService
+            locationVC.delegate = self
             window.rootViewController = locationVC
         default:
             let nav = storyboard.instantiateViewController(withIdentifier: "RestaurantNavigationController") as? UINavigationController
             self.navigationController = nav
             window.rootViewController = nav
-            loadBusinesses()
+            locationService.getLocation()
+            (nav?.topViewController as? RestaurantTableVC)?.delegate = self
         }
         window.makeKeyAndVisible()
         
         return true
     }
-
-    private func loadBusinesses() {
-        service.request(.search(lat: 42.361145, long: -71.057083)) { (result) in
+    
+    private func loadDetails(withId id: String) {
+        service.request(.details(id: id)) { [weak self] (result) in
             switch result {
             case .success(let response):
-                let root = try? self.jsonDecoder.decode(Root.self, from: response.data)
-                let viewModels = root?.businesses.compactMap(RestaurantListViewModel.init)
+                guard let strongSelf = self else { return }
+                if let details = try? strongSelf.jsonDecoder.decode(Details.self, from: response.data) {
+                    let detailsViewModel = DetailsViewModel(details: details)
+                    (strongSelf.navigationController?.topViewController as? DetailsFoodVC)?.viewModel = detailsViewModel
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
+    }
+
+    private func loadBusinesses(with coordinate: CLLocationCoordinate2D) {
+        service.request(.search(lat: coordinate.latitude, long: coordinate.longitude)) { [weak self] (result) in
+            switch result {
+            case .success(let response):
+                guard let strongSelf = self else { return }
+                let root = try? strongSelf.jsonDecoder.decode(Root.self, from: response.data)
+                let viewModels = root?.businesses.compactMap(RestaurantListViewModel.init).sorted(by: { $0.distance < $1.distance })
                 
-                if let nav = self.window.rootViewController as? UINavigationController, let restaurantListVC = nav.topViewController as? RestaurantTableVC {
+                if let nav = strongSelf.window.rootViewController as? UINavigationController, let restaurantListVC = nav.topViewController as? RestaurantTableVC {
                     restaurantListVC.viewModels = viewModels ?? []
                 }
                 
@@ -56,5 +89,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+}
+
+extension AppDelegate: LocationActions {
+    func didTapAllow() {
+        locationService.requestAuthorization()
+    }
+}
+
+extension AppDelegate: ListActions {
+    func didTapCell(_ viewModel: RestaurantListViewModel) {
+        loadDetails(withId: viewModel.id)
+    }
 }
 

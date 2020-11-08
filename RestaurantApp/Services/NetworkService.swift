@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import  Moya
+import Moya
 
 private let apiKey = "C9AzPyhRrBuEiRAPziSi606uzNFnbF2fcFcGzx_JEvc8giWeFn5BSgTesMRKXv_KiSLu3EBjWncurvVHxOMjrArwl6UxiDhmWgR7ICGmsEhw8d1do2xhIb6BfjRgXHYx"
 
@@ -24,7 +24,7 @@ enum YelpService {
             switch self {
             case .search:
                 return "/search"
-            case let .details(id):
+            case .details(let id):
                 return "/\(id)"
             }
         }
